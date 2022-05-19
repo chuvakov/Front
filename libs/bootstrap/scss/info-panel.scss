@@ -1,0 +1,177 @@
+@import "functions";
+@import "variables";
+@import "mixins";
+
+.light {
+  $primary: #1266F1;
+  $btn-color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  $enable-shadows: true;
+
+  //Card
+  $card-cap-color: $primary;
+  $weather-temp: $primary;
+
+  .weather-temp {
+    color: $weather-temp;
+  }
+
+  .btn-color {
+    color: $btn-color !important;
+  }
+
+  $theme-colors: ("primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark) !default;
+
+
+  @each $color,
+  $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
+  @each $color,
+  $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-color: #eeeeee;
+  $body-bg: white;
+
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+
+  background-color: $body-bg;
+
+  @import 'bootstrap';
+}
+
+.dark {
+  $primary: #bb86fc;
+  $btn-color: white;
+  $enable-shadows: false;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  //Card
+  $card-cap-color: $primary;
+  $card-bg: #1e1e1e;
+  $card-title: #818181;
+  $card-inner-border: 1px solid $primary;
+  $weather-temp: $primary;
+
+  .weather-temp {
+    color: $weather-temp;
+  }
+
+  .card-inner {
+    border: $card-inner-border !important;
+  }
+
+  .card-title {
+    color: $card-title;
+  }
+
+  //Form-control
+  $input-color: white;
+  $input-bg: #1e1e1e;
+  $input-border-color: $primary;
+
+  $input-focus-color: $input-color;
+  $input-focus-bg: $input-bg;
+  $input-focus-border-color: $input-border-color;
+
+  //Form-select
+  $form-select-color: white;
+  $form-select-bg: #1e1e1e;
+  $form-select-border-color: $primary;
+
+  //Select2
+
+  .select2-container--default {
+    .select2-results__option--highlighted.select2-results__option--selectable {
+      background-color: $primary;
+      color: $form-select-color;
+    }
+
+    .select2-results__option--selectable.select2-results__option--selected {
+      background-color: $form-select-bg;
+      color: $primary;
+    }
+
+    .select2-dropdown {
+      background-color: $form-select-bg;
+      color: $form-select-color;
+      border: 1px solid $form-select-border-color;
+
+      .select2-search__field {
+        border: 1px solid $form-select-border-color;
+        background-color: $form-select-bg;
+        color: $form-select-color;
+      }
+    }
+
+    .select2-selection--single {
+      color: $form-select-color;
+      background-color: $form-select-bg;
+      border: 1px solid $form-select-border-color;
+
+      .select2-selection__rendered {
+        color: $form-select-color;
+      }
+
+      .select2-selection__clear {
+        color: $form-select-color;
+      }
+    }
+  }
+
+  //Form-check
+  $form-check-input-checked-bg-color: $primary;
+  $form-check-input-checked-border-color: $primary;
+
+  .btn-color {
+    color: $btn-color !important;
+  }
+
+  $theme-colors: ("primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark);
+
+
+  @each $color,
+  $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
+  @each $color,
+  $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-color: white;
+  $body-bg: #121212;
+
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+
+  background-color: $body-bg;
+  color: $body-color;
+
+  @import 'bootstrap';
+}
