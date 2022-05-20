@@ -58,31 +58,26 @@ $(function () {
 
 	//С сайта ЦБ запрашиваем текущий курс валют и у станавливаем
 	function initDailyCurrency() {
-		axios.get('https://www.cbr-xml-daily.ru/daily_json.js').then(function (response) {
+		axios.get('https://localhost:7252/api/Currency').then(function (response) {
 			let data = response.data;
-			console.log(data);
 
-			initCurrency('dailyDollar', data.Valute.USD);
-			initCurrency('dailyEuro', data.Valute.EUR);
-			initCurrency('dailyYuan', data.Valute.CNY);
+			initCurrency('dailyDollar', data.dollar);
+			initCurrency('dailyEuro', data.euro);
+			initCurrency('dailyYuan', data.yuan);
 		});
 	}
 
 	function initCurrency(id, currency) {
-		let currencyCurent = currency.Value.toFixed(2),
-			curencyPrevious = currency.Previous.toFixed(2),
-			difference = (currencyCurent - curencyPrevious).toFixed(2);
-
-		$('#' + id).text(currency.Value.toFixed(2));
+		$('#' + id).text(currency.value);
 
 		let $difference = $('#' + id)
 			.parent()
 			.parent()
 			.find('.difference');
 
-		$difference.text(difference);
+		$difference.text(currency.difference);
 
-		if (difference >= 0) {
+		if (currency.difference >= 0) {
 			$difference.addClass('inc');
 		} else {
 			$difference.addClass('dec');
