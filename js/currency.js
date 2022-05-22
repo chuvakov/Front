@@ -3,29 +3,20 @@
 //Ожидаем подгрузки страницы а после выполняем код в данной функции
 $(function () {
 	//Через API получаем курсы валют для библиотеки money.js (используем в конверторе валют)
-	$.getJSON(
-		// NB: using Open Exchange Rates here, but you can use any source!
-		'https://openexchangerates.org/api/latest.json?app_id=3cdd056ec1734a17af02d07491650b31',
-		function (data) {
-			// Check money.js has finished loading:
-			if (typeof fx !== 'undefined' && fx.rates) {
-				fx.rates = data.rates;
-				fx.base = data.base;
-			} else {
-				// If not, apply to fxSetup global:
-				var fxSetup = {
-					rates: data.rates,
-					base: data.base,
-				};
-			}
-
+	axios
+		.get(
+			// NB: using Open Exchange Rates here, but you can use any source!
+			'https://localhost:7252/api/Currency/GetAll'
+		)
+		.then(function (response) {
+			let currencies = response.data;
 			//Наполняем выпадающий список валют
 			let convertFromSelect = $('#select-from')
 				.select2({
 					width: '100%',
 					placeholder: 'Из',
 					allowClear: true,
-					data: Object.keys(fx.rates).map((item) => {
+					data: currencies.map((item) => {
 						return {
 							id: item,
 							text: item,
@@ -41,7 +32,7 @@ $(function () {
 					width: '100%',
 					placeholder: 'В',
 					allowClear: true,
-					data: Object.keys(fx.rates).map((item) => {
+					data: currencies.map((item) => {
 						return {
 							id: item,
 							text: item,
@@ -51,8 +42,7 @@ $(function () {
 					templateSelection: (data) => data.text,
 				})
 				.on('select2:select', function (e) {});
-		}
-	);
+		});
 
 	initDailyCurrency();
 
@@ -123,7 +113,19 @@ $(function () {
 		$('#convert-result').addClass('alert-primary');
 
 		let sum = $('#convert-sum').val();
-		let result = fx(sum).from($('#select-from').val()).to($('#select-to').val());
-		$('#convert-result').text(result);
+		let from = $('#select-from').val();
+		let to = $('#select-to').val();
+
+		axios
+			.get('https://localhost:7252/api/Currency/Convert', {
+				params: {
+					from: from,
+					to: to,
+					sum: sum,
+				},
+			})
+			.then(function (response) {
+				$('#convert-result').text(response.data);
+			});
 	});
 });
